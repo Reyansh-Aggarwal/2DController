@@ -44,11 +44,11 @@ public:
 };
 
 void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float delta){
-  float grav = 9.8f;
-  float jumpSpeed = 15.0f;
+  float grav = 25.0f;
+  float jumpSpeed = 20.0f;
 
   //movement
-  if (IsKeyPressed(KEY_SPACE) && player.onFloor)
+  if (IsKeyPressed(KEY_SPACE) && player.canJump)
   {
     //player.pos.y-= 5 * delta;
     player.jumpPower = jumpSpeed;
@@ -77,6 +77,8 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
   {
     //std::cout << "vel++\n";
     player.velY -= player.jumpPower * delta;
+    player.onFloor = false;
+
   }
   if (player.onFloor)
   {
@@ -85,7 +87,7 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
   //----------------------------------------------------------------
   //grav
   //----------------------------------------------------------------
-  if (player.pos.y == player.groundY - 50)
+  if (!player.onFloor)
   {
     player.velY += grav * delta;
     player.jumpPower = 0;
@@ -107,9 +109,7 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
       {
         player.jumpPower = 0.0f;
       }
-  } else 
-  {
-      player.onFloor = false;
+      std::cout << "collide\n";
   }
 
   if (player.topRight.x == floorRec.x){
@@ -127,6 +127,6 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
   player.bottomLeft.y = player.pos.y + 64;
   player.topRight.x = player.pos.x + 64;
   player.topRight.y = player.pos.y;
-  player.pos.y -= player.velY;
+  player.pos.y += player.velY;
   //
 }
