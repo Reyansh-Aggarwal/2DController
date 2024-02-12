@@ -98,7 +98,7 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
   //----------------------------------------------------------------
   //collisions
   //----------------------------------------------------------------
-  if (player.bottomLeft.y == floorRec.y)
+  if (CheckCollisionPointRec(player.bottomLeft, floorRec))
   {
       player.onFloor = true;
       if (!(player.velY == 0.0f))
