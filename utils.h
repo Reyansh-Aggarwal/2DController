@@ -6,20 +6,23 @@ Texture loadTexture( const char* ImgPath, int width, int height); //taking img p
 void clampi (float &cl, int min, int max);
 int cloudX();
 
-class Player {
+class Player { //not needed here but to keep a healthy format
 public:
   Vector2 pos;
-  Vector2 bottomLeft;
-  Vector2 topRight;
+  Rectangle rect;
   float velY;
   float jumpPower;
   float groundY;
-  bool onFloor;
-  bool collRight;
-  bool collLeft;
+  float width;
+  float height;
+  bool onPlatform;
   bool canJump;
+
 };
 
+
 void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float delta);
+void UpdatePlayerRec(Player &player);
+
 
 #endif

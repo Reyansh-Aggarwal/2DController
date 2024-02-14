@@ -5,10 +5,14 @@
 //TODO: FIX JUMPING
 int main() {   
 
-
+	
 	Player player = {0};
 	player.pos.y = 400 - 56;
-	player.groundY = player.pos.y;
+	player.width = 56;
+	player.height = 56;
+	player.onPlatform = true;
+	player.jumpPower = 350.0f;
+	player.canJump = true;
 	bool rotation = true; //true = left
 	Vector2 screen;
 	screen.x = 960;
@@ -27,16 +31,23 @@ int main() {
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
 	//
-
 	InitWindow(screen.x, screen.y, "2D controller" );
 	SetTargetFPS(144);
-	Texture2D sky = loadTexture("/assets/sky.jpg", 626,540);
-	Texture2D playerLeft = loadTexture("assets/spriteLeft.png", 56, 56);
-	Texture2D playerRight = loadTexture("assets/spriteRight.png", 56, 56);
+	//Texture2D sky = loadTexture("/assets/sky.jpg", 626,540);
+	Texture2D playerLeft = loadTexture("assets/spriteLeft.png", player.width, player.height);
+	Texture2D playerRight = loadTexture("assets/spriteRight.png", player.width, player.height);
+
 
 	while (!WindowShouldClose()){
 
-		
+		UpdatePlayerRec(player);
+		UpdatePlayer(player, rotation, floorRec,GetFrameTime());
+
+		//camera settings
+		camera.target = {player.pos.x, player.pos.y};
+		camera.offset = {490, 380};
+		//
+
 		BeginDrawing(); 
 		
 		BeginMode2D(camera);
@@ -52,13 +63,7 @@ int main() {
 			DrawTextureV(playerRight, player.pos, WHITE); 
 		}
 
-		UpdatePlayer(player, rotation, floorRec,GetFrameTime());
 		//std::cout << "player.y = " << player.pos.y << std::endl;  //debugging
-		
-		//camera settings
-		camera.target = {player.pos.x, player.pos.y};
-		camera.offset = {490, 380};
-		//
 		EndMode2D();
 
 		//gui
@@ -69,7 +74,7 @@ int main() {
 	}
 
 	//unloading all textures
-	UnloadTexture (sky);
+	//UnloadTexture (sky);
 	UnloadTexture(playerLeft);
 	UnloadTexture(playerRight);
 

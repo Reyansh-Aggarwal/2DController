@@ -31,27 +31,28 @@ int cloudX (){
 class Player { //not needed here but to keep a healthy format
 public:
   Vector2 pos;
-  Vector2 bottomLeft;
-  Vector2 topRight;
+  Rectangle rect;
   float velY;
   float jumpPower;
   float groundY;
-  bool onFloor;
-  bool collRight;
-  bool collLeft;
+  float width;
+  float height;
+  bool onPlatform;
   bool canJump;
 
 };
 
+
 void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float delta){
-  float grav = 25.0f;
-  float jumpSpeed = 20.0f;
+  float grav = 9.8f;
+  float jumpSpeed;
+  //player.onPlatform = player.canJump;
 
   //movement
-  if (IsKeyPressed(KEY_SPACE) && player.canJump)
+  if (IsKeyDown(KEY_SPACE) && player.canJump)
   {
     //player.pos.y-= 5 * delta;
-    player.jumpPower = jumpSpeed;
+    jumpSpeed = player.jumpPower;
     player.canJump = false;
     std::cout << "Jumped!\n";
   }
@@ -63,70 +64,65 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
 
   if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
   {
-    if(!player.collRight){
       player.pos.x += 1;
       rotation = false;
-    }
   }
 
-  
   //----------------------------------------------------------------
   //jumping
   //----------------------------------------------------------------
-  if (!player.canJump)
+  if (!(player.canJump) && !(player.pos.y <= (player.groundY - 50)))
   {
     //std::cout << "vel++\n";
-    player.velY -= player.jumpPower * delta;
-    player.onFloor = false;
-
+    player.velY -= jumpSpeed * delta;
+    player.onPlatform = false;
+  } else {
+    jumpSpeed = 0.0f;
   }
-  if (player.onFloor)
+
+  if (player.onPlatform)
   {
     player.groundY = player.pos.y;
   }
   //----------------------------------------------------------------
   //grav
   //----------------------------------------------------------------
-  if (!player.onFloor)
+  if (player.pos.y < (player.groundY - 50))
   {
     player.velY += grav * delta;
-    player.jumpPower = 0;
-    std::cout << "grounded\n";
-    player.canJump = true;
+    //std::cout << "grounded\n";
   }
   
+
   //----------------------------------------------------------------
   //collisions
   //----------------------------------------------------------------
-  if (CheckCollisionPointRec(player.bottomLeft, floorRec))
+  if (CheckCollisionRecs(floorRec, player.rect)) //platform collision
   {
-      player.onFloor = true;
+      player.onPlatform = true;
+      
+      if (!player.canJump){
+      player.canJump = true;
+      }
+
       if (!(player.velY == 0.0f))
       {
       player.velY = 0.0f;
       }
-      if (!(player.jumpPower == 0.0f))
-      {
-        player.jumpPower = 0.0f;
-      }
-      std::cout << "collide\n";
+      //std::cout << "collide\n";
   }
 
-  if (player.topRight.x == floorRec.x){
-        player.collRight = true;
-  } 
-  else 
-  {
-    player.collRight = false;
-  }
-
-  //
-
+  //----------------------------------------------------------------
   //math
-  player.bottomLeft.x = player.pos.x;
-  player.bottomLeft.y = player.pos.y + 64;
-  player.topRight.x = player.pos.x + 64;
-  player.topRight.y = player.pos.y;
+  //----------------------------------------------------------------
   player.pos.y += player.velY;
   //
+}
+
+void UpdatePlayerRec(Player &player){
+  player.rect.width = player.width; //incase we are transforming player size during game
+  player.rect.height = player.height;
+  player.rect.y = player.pos.y;
+  player.rect.x = player.pos.x;
+  //std::cout << "rect updated\n";
 }
