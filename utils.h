@@ -12,6 +12,7 @@ public:
   Rectangle rect;
   float velY;
   float jumpPower;
+  float dashDist;
   float groundY;
   float width;
   float height;
