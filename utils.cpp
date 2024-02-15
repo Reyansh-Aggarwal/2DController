@@ -57,21 +57,17 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
     }
 
   }
-  if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && player.canJump)
-  {
+  if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && player.canJump){
     //player.pos.y-= 5 * delta;
     jumpSpeed = player.jumpPower;
     player.canJump = false;
-    std::cout << "Jumped!\n";
   }
-  if (IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT))
-  {
+  if (IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT)){
     player.pos.x -= 1;
     rotation = true;
   }
 
-  if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
-  {
+  if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)){
       player.pos.x += 1;
       rotation = false;
   }
@@ -79,21 +75,19 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
   //----------------------------------------------------------------
   //jumping
   //----------------------------------------------------------------
-  if (!(player.canJump) && !(player.pos.y <= (player.groundY - 50)))
-  {
+  if (!(player.canJump) && !(player.pos.y < (player.groundY - 50))){
     //std::cout << "vel++\n";
     player.onPlatform = false;
     player.velY -= jumpSpeed * delta;
+    player.canJump = false;
   } else {
     player.canJump = true;
   }
 
-  if (player.onPlatform)
-  {
+  if (player.onPlatform){
     player.canJump = true;
   }
-  if (player.onPlatform)
-  {
+  if (player.onPlatform){
     player.groundY = player.pos.y;
   }
   //----------------------------------------------------------------
@@ -112,21 +106,17 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
   //----------------------------------------------------------------
   //collisions
   //----------------------------------------------------------------
-  if (CheckCollisionRecs(floorRec, player.rect)) //platform collision
-  { 
-    if (!(player.pos.y == floorRec.y))
-    {
+  if (CheckCollisionRecs(floorRec, player.rect)) { // platform collision 
+    if (!(player.pos.y == floorRec.y)){
       player.pos.y = floorRec.y - player.height;
     }
     player.onPlatform = true;
     
-    if (!(player.velY == 0.0f))
-    {
+    if (!(player.velY == 0.0f)){
       player.velY = 0.0f;
     }
-    std::cout << "collision\n";
-  } else 
-  {
+  }
+  else  {
     player.onPlatform = false;
   }
 
