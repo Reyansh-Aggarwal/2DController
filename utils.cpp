@@ -1,6 +1,5 @@
-#include <raylib.h>
-#include <cstdlib>
-#include <iostream>
+#include "utils.h"
+
 Texture loadTexture( const char* ImgPath, int width, int height){ 
 
   Image img = LoadImage(ImgPath);
@@ -28,20 +27,19 @@ int cloudX (){
   return posx;
 }
 
-class Player { //not needed here but to keep a healthy format
-public:
-  Vector2 pos;
-  Rectangle rect;
-  float velY;
-  float jumpPower;
-  float dashDist;
-  float groundY;
-  float width;
-  float height;
-  bool onPlatform;
-  bool canJump;
-};
-
+// class Player { //not needed here but to keep a healthy format
+// public:
+//   Vector2 pos;
+//   Rectangle rect;
+//   float velY;
+//   float jumpPower;
+//   float dashDist;
+//   float groundY;
+//   float width;
+//   float height;
+//   bool onPlatform;
+//   bool canJump;
+// };
 
 void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float delta){
   float grav = 9.8f;
