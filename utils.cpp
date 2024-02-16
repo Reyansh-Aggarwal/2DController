@@ -98,9 +98,13 @@ void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float del
   //   player.velY += grav * delta;
   // }
 
-  if (player.pos.y < (player.groundY - 50) && player.onPlatform || player.canJump){
+  /*if (player.pos.y < (player.groundY - 50) && player.onPlatform || player.canJump){
     player.velY += grav * delta;
     player.onPlatform = true;
+  }*/
+
+  if ((player.pos.y < (player.groundY - 50) && !(player.onPlatform))){
+    player.velY += grav*delta;
   }
   
   //----------------------------------------------------------------

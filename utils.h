@@ -8,7 +8,7 @@ Texture loadTexture( const char* ImgPath, int width, int height); //taking img p
 void clampi (float &cl, int min, int max);
 int cloudX();
 
-class Player { //not needed here but to keep a healthy format
+class Player { 
 public:
   Vector2 pos;
   Rectangle rect;
