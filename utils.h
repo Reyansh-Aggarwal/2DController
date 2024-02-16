@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include <iostream>
 #include <cstdlib>
-
+#include <string>
 Texture loadTexture( const char* ImgPath, int width, int height); //taking img path, width and height if you wish to resize
 void clampi (float &cl, int min, int max);
 int cloudX();
@@ -20,12 +20,13 @@ public:
   float height;
   bool onPlatform;
   bool canJump;
-
+  int dir;
+  std::string status;
 };
 
 
-void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float delta);
+void UpdatePlayer (Player &player,Rectangle floorRec, bool &dashEnd, bool &toDash, float delta);
 void UpdatePlayerRec(Player &player);
-
+bool Dash (Player &player, float &startPos, bool &toDash, float delta);
 
 #endif

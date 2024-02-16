@@ -1,5 +1,5 @@
 #include "utils.h"
-
+#include <string>
 Texture loadTexture( const char* ImgPath, int width, int height){ 
 
   Image img = LoadImage(ImgPath);
@@ -41,37 +41,54 @@ int cloudX (){
 //   bool canJump;
 // };
 
-void UpdatePlayer (Player &player, bool &rotation, Rectangle floorRec, float delta){
+void UpdatePlayer (Player &player, Rectangle floorRec, bool &dashEnd, bool &toDash, float delta){
   float grav = 9.8f;
   float jumpSpeed;
-
+  toDash = false;
   //----------------------------------------------------------------
-  //INPUT
+  //INPUT & MOVEMENT
   //----------------------------------------------------------------
-  if (IsKeyPressed(KEY_LEFT_SHIFT)){ //dashing
+  if (!dashEnd){
+    if (IsKeyPressed(KEY_LEFT_SHIFT)){ //dashing
+        player.status = "dash";
 
-    if (!rotation){
-      player.pos.x += player.dashDist;
+      if (player.status == "left"){
+        player.dir = -1;
+      } 
+      else if(player.status == "right") 
+      {
+        player.dir = 1;
+      }
+      toDash = true;
+      player.pos.x += player.dashDist * player.dir;
     } else {
-      player.pos.x -= player.dashDist;
+      toDash = false;
+    }
+    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && player.canJump){
+      //player.pos.y-= 5 * delta;
+      jumpSpeed = player.jumpPower;
+      player.canJump = false;
     }
 
-  }
-  if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && player.canJump){
-    //player.pos.y-= 5 * delta;
-    jumpSpeed = player.jumpPower;
-    player.canJump = false;
-  }
-  if (IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT)){
-    player.pos.x -= 1;
-    rotation = true;
-  }
+    if (IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT)){
+      player.dir = -1;
+      player.status = "turn";
+    }
+    else if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
+        player.dir = 1;
+        player.status = "turn";
+    } 
+    if (!(IsKeyDown(KEY_D) || IsKeyDown(KEY_A))) {
+      player.status = "neutral";
+      player.dir = 0;
 
-  if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)){
-      player.pos.x += 1;
-      rotation = false;
-  }
+    } 
+    else {
+      player.status = "turn";
+    }
 
+    player.pos.x += 100 * delta * player.dir;
+  }
   //----------------------------------------------------------------
   //jumping
   //----------------------------------------------------------------
@@ -138,4 +155,24 @@ void UpdatePlayerRec(Player &player){
   player.rect.y = player.pos.y;
   player.rect.x = player.pos.x;
   //std::cout << "rect updated\n";
+}
+
+bool Dash(Player &player, float &startPos, bool &toDash, float delta){
+  //make dashing look better
+  float dashLimit = 100 * player.dir;
+  if (toDash)
+  {
+    if (!(player.pos.y == startPos + dashLimit))
+    {
+      std::cout << "dash!\n";
+      player.pos.y += 1 * player.dir * delta;
+      return false;
+    } 
+    else 
+    {
+      return true;
+    }
+  } else {
+    return false;
+  }
 }
