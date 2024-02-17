@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
-Texture loadTexture( const char* ImgPath, int width, int height); //taking img path, width and height if you wish to resize
+Texture loadTexture( const char* ImgPath, int width, int height, Image* imgPtr); //taking img path, width and height if you wish to resize
 void clampi (float &cl, int min, int max);
 int cloudX();
 
@@ -19,7 +19,7 @@ public:
   float width;
   float height;
   bool onPlatform;
-  bool canJump;
+  bool toJump;
   int dir;
   std::string status;
 };
