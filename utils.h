@@ -14,18 +14,18 @@ public:
   Rectangle rect;
   float velY;
   float jumpPower;
-  float dashDist;
+  float dashDist; 
   float groundY;
   float width;
   float height;
   bool onPlatform;
-  bool toJump;
-  int dir;
+  bool toJump;  
+  int dir; //direction
   std::string status;
 };
 
 
-void UpdatePlayer (Player &player,Rectangle floorRec, bool &dashEnd, bool &toDash, float delta);
+void UpdatePlayer (Player &player,Rectangle floorRec, float delta);
 void UpdatePlayerRec(Player &player);
 bool Dash (Player &player, float &startPos, bool &toDash, float delta);
 

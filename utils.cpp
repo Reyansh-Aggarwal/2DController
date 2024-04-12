@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <string>
+
 Texture loadTexture( const char* ImgPath, int width, int height, Image* imgPtr){ 
 
   Image img = LoadImage(ImgPath);
@@ -13,6 +14,7 @@ Texture loadTexture( const char* ImgPath, int width, int height, Image* imgPtr){
   return texture;
 }
 
+
 void clampi (float &cl, int min, int max){
   if (cl > max){
     cl = max;
@@ -22,49 +24,23 @@ void clampi (float &cl, int min, int max){
   }
 }
 
+
 int cloudX (){
   int posx =rand() % (856 + 1 - 0) + 0;
   return posx;
 }
 
-// class Player { //not needed here but to keep a healthy format
-// public:
-//   Vector2 pos;
-//   Rectangle rect;
-//   float velY;
-//   float jumpPower;
-//   float dashDist;
-//   float groundY;
-//   float width;
-//   float height;
-//   bool onPlatform;
-//   bool canJump;
-// };
 
-void UpdatePlayer (Player &player, Rectangle floorRec, bool &dashEnd, bool &toDash, float delta){
+void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
   float grav = 9.8f;
   float jumpSpeed;
-  //stoDash = false;
+
   //----------------------------------------------------------------
   //INPUT & MOVEMENT
   //----------------------------------------------------------------
-  if (dashEnd){
-    if (IsKeyPressed(KEY_LEFT_SHIFT)){ //dashing
-        //player.status = "dash";
-
-      if (player.status == "left"){
-        player.dir = -1;
-      } 
-      else if(player.status == "right") 
-      {
-        player.dir = 1;
-      }
-      toDash = true;
-      //player.pos.x += player.dashDist * player.dir;
-      } 
-    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP))){
+   
+    if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_W))){
       //player.pos.y-= 5 * delta;
-      player.groundY = player.pos.y;
       jumpSpeed = player.jumpPower;
       player.toJump = true;
     }
@@ -86,36 +62,23 @@ void UpdatePlayer (Player &player, Rectangle floorRec, bool &dashEnd, bool &toDa
     }
 
     player.pos.x += 100 * delta * player.dir;
-  }
-  if (dashEnd){
-    toDash = false;
-  }
+
   //----------------------------------------------------------------
   //jumping
   //----------------------------------------------------------------
   if (player.toJump){
-    //std::cout << "vel++\n";
-    player.velY -= jumpSpeed * delta;
+    player.velY -= jumpSpeed /200;
 
   }
   if (player.pos.y < player.groundY - 50){
     player.toJump = false;
   }
   if (player.onPlatform){
-    player.groundY = player.pos.y;
+    
   }
   //----------------------------------------------------------------
   //grav
   //----------------------------------------------------------------
-  // if (player.pos.y < (player.groundY - 50))
-  // {
-  //   player.velY += grav * delta;
-  // }
-
-  /*if (player.pos.y < (player.groundY - 50) && player.onPlatform || player.canJump){
-    player.velY += grav * delta;
-    player.onPlatform = true;
-  }*/
 
   if (!(player.onPlatform)){
     player.velY += grav*delta;
@@ -129,7 +92,7 @@ void UpdatePlayer (Player &player, Rectangle floorRec, bool &dashEnd, bool &toDa
       player.pos.y = floorRec.y - player.height;
     }
     player.onPlatform = true;
-    
+    player.groundY = player.pos.y;
     if (!(player.velY == 0.0f)){
       player.velY = 0.0f;
     }
@@ -154,22 +117,3 @@ void UpdatePlayerRec(Player &player){
   //std::cout << "rect updated\n";
 }
 
-/*bool Dash(Player &player, float &startPos, bool &toDash, float delta){  // not
-  //make dashing look better
-  float dashLimit = 100 * player.dir;
-  if (toDash)
-  {
-    if (!(player.pos.y == startPos + dashLimit))
-    {
-      std::cout << "dash!\n";
-      player.pos.y += 100 * player.dir;
-      return false;
-    } 
-    else 
-    {
-      return true;
-    }
-  } else {
-    return false;
-  }
-}*/
