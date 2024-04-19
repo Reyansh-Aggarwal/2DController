@@ -67,20 +67,17 @@ void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
   //jumping
   //----------------------------------------------------------------
   if (player.toJump){
-    player.velY -= jumpSpeed /200;
+    player.velY -= jumpSpeed*delta;
 
   }
   if (player.pos.y < player.groundY - 50){
     player.toJump = false;
   }
-  if (player.onPlatform){
-    
-  }
   //----------------------------------------------------------------
   //grav
   //----------------------------------------------------------------
 
-  if (!(player.onPlatform)){
+  if (!(player.onPlatform) || player.toJump){
     player.velY += grav*delta;
   }
   
