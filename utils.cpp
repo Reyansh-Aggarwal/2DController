@@ -39,9 +39,9 @@ void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
   //----------------------------------------------------------------
    
     if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_W))){
-      player.status = "jump";
+      player.jumpStat = true;
+      player.baseY = player.pos.y;
     }
-
     if (IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT)){
       player.dir = -1;
       player.status = "turn";
@@ -62,8 +62,15 @@ void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
 
   //----------------------------------------------------------------
   //jumping
-  //----------------------------------------------------------------
+  //---------------------------------------------------------------- 
+  if (player.jumpStat){
+    player.velY -= player.jumpPower *delta; 
+  }
 
+  if (player.pos.y < (player.baseY - 25)){
+    player.jumpStat = false;
+
+  }
 
 
   //----------------------------------------------------------------
@@ -82,7 +89,6 @@ void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
       player.pos.y = floorRec.y - player.height;
     }
     player.onPlatform = true;
-    player.groundY = player.pos.y;
     if (!(player.velY == 0.0f)){
       player.velY = 0.0f;
     }

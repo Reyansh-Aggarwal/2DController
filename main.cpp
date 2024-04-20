@@ -12,6 +12,7 @@ int main() {
   player.height = 64;
   player.onPlatform = true;
   player.status = "neutral"; //1 = left, 2 = right, 0 = front
+  player.jumpPower = 30.0f;
   Vector2 screen;
   screen.x = 960;
   screen.y = 540;
@@ -73,7 +74,8 @@ int main() {
 	 else if (player.status == "neutral")
 	 {
 		DrawTextureV(playerPassive, player.pos, WHITE);
-	 } else if (player.status == "jump"){
+	 }
+	 if (player.jumpStat == true){
 	 	//Draw jump texture
 	 }
 	 

@@ -14,12 +14,11 @@ public:
   Rectangle rect;
   float velY;
   float jumpPower;
-  float dashDist; 
-  float groundY;
+  float baseY;
   float width;
   float height;
-  bool onPlatform;
-  bool toJump;  
+  bool onPlatform; 
+  bool jumpStat;
   int dir; //direction
   std::string status;
 };
