@@ -32,7 +32,7 @@ int cloudX (){
 
 
 void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
-  float grav = 9.8f;
+  float grav = 10.0f;
 
   //----------------------------------------------------------------
   //INPUT & MOVEMENT
@@ -72,12 +72,11 @@ void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
 
   }
 
-
   //----------------------------------------------------------------
   //grav
   //----------------------------------------------------------------
 
-  if (!(player.onPlatform)){
+  if (!(player.onPlatform) && !player.jumpStat){
     player.velY += grav*delta;
   }
   

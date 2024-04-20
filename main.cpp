@@ -12,7 +12,7 @@ int main() {
   player.height = 64;
   player.onPlatform = true;
   player.status = "neutral"; //1 = left, 2 = right, 0 = front
-  player.jumpPower = 30.0f;
+  player.jumpPower = 25.0f;
   Vector2 screen;
   screen.x = 960;
   screen.y = 540;
