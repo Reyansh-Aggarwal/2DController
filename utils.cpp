@@ -33,16 +33,13 @@ int cloudX (){
 
 void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
   float grav = 9.8f;
-  float jumpSpeed;
 
   //----------------------------------------------------------------
   //INPUT & MOVEMENT
   //----------------------------------------------------------------
    
     if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_W))){
-      //player.pos.y-= 5 * delta;
-      jumpSpeed = player.jumpPower;
-      player.toJump = true;
+      player.status = "jump";
     }
 
     if (IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT)){
@@ -66,18 +63,14 @@ void UpdatePlayer (Player &player, Rectangle floorRec, float delta){
   //----------------------------------------------------------------
   //jumping
   //----------------------------------------------------------------
-  if (player.toJump){
-    player.velY -= jumpSpeed*delta;
 
-  }
-  if (player.pos.y < player.groundY - 50){
-    player.toJump = false;
-  }
+
+
   //----------------------------------------------------------------
   //grav
   //----------------------------------------------------------------
 
-  if (!(player.onPlatform) || player.toJump){
+  if (!(player.onPlatform)){
     player.velY += grav*delta;
   }
   

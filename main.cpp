@@ -11,8 +11,6 @@ int main() {
   player.width = 64;
   player.height = 64;
   player.onPlatform = true;
-  player.jumpPower = 500.0f;
-  player.dashDist = 100.0f;
   player.status = "neutral"; //1 = left, 2 = right, 0 = front
   Vector2 screen;
   screen.x = 960;
@@ -60,9 +58,9 @@ int main() {
 
 	 ClearBackground(BLUE);
 	 DrawRectangleRec(floorRec, GREEN);
-	 //====
+	 //===============
 	 //drawing player
-	 //====
+	 //===============
 
 	 if (player.status == "turn" && player.dir == -1)
 	 {
@@ -75,6 +73,8 @@ int main() {
 	 else if (player.status == "neutral")
 	 {
 		DrawTextureV(playerPassive, player.pos, WHITE);
+	 } else if (player.status == "jump"){
+	 	//Draw jump texture
 	 }
 	 
 
