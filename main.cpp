@@ -29,7 +29,7 @@ int main() {
   camera.rotation = 0.0f;
   camera.zoom = 1.0f;
 	
-  InitWindow(screen.x, screen.y, "2D controller" );
+  InitWindow(screen.x, screen.y, "2D controller");
   SetTargetFPS(144);
 
   Texture2D playerLeft = loadTexture("assets/sprite_left.png", player.width, player.height, imgPtr);
@@ -63,18 +63,20 @@ int main() {
 	 //drawing player
 	 //===============
 
-	 if (player.status == "turn" && player.dir == -1)
-	 {
-		DrawTextureV(playerLeft, player.pos, WHITE); 
-	 }
-	 else if (player.status == "turn" && player.dir == 1)
-	 {
-		DrawTextureV(playerRight, player.pos, WHITE); 
-	 } 
-	 else if (player.status == "neutral")
-	 {
-		DrawTextureV(playerPassive, player.pos, WHITE);
-	 }
+  switch (player.status) {
+    case "neutral":
+      break;
+
+  if (player.status == "turn"){
+  	if (player.dir == -1) {
+    	DrawTextureV(playerLeft, player.pos, WHITE);
+  	} else if (player.dir == 1) {
+    	DrawTextureV(playerRight, player.pos, WHITE);
+  	} 
+  	} else if (player.status == "neutral"){
+			DrawTextureV(playerPassive, player.pos, WHITE);
+  }
+  
 	 if (player.jumpStat == true){
 	 	//Draw jump texture
 	 }
